@@ -1,11 +1,17 @@
 const {tokenValidator} = require("./token");
 
-module.exports = function(req,res,next){
-    const {jwt} = req.cookies;
-    const valid = await tokenValidator(jwt);
-    if(valid){
-        next()
-    }else{
-        res.send("Access Denied");
+module.exports = async function(req,res,next){
+    try {
+        const {jwt} = req.cookies;
+        const valid = await tokenValidator(jwt);
+        if(valid){
+            next();
+        }else{
+            res.send("Access Denied");
+        }
+        
+    } catch (error) {
+        res.send(error);
     }
+   
 }

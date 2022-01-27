@@ -1,6 +1,10 @@
 const jwt = require("jsonwebtoken");
 const tokenGenerator = (email)=>{
-    const token = jwt.sign({email},process.env.JWT_KEY,{expiresIn:"3hours"})
+    const token = jwt.sign(
+        {email},
+        process.env.JWT_KEY,
+        {expiresIn:"3hours"}
+    )
     return token;
 }
 
