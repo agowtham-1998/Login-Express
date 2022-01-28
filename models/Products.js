@@ -15,6 +15,10 @@ const productSchema = new mongoose.Schema({
     },
     active:{
         type:Boolean
+    },
+    image:{
+        data:Buffer,
+        contentType:String
     }
 })
 module.exports = mongoose.model("Product",productSchema);
