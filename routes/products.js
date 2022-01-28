@@ -4,56 +4,50 @@ const products = express.Router();
 const Product = require("../models/Products");
 const multer = require("multer");
 
-
-products.post("/products/upload", async (req,res)=>{
-    try {
-        upload(req,res,(err)=>{
-            if(err){
-                console.log(err);
-            }else{
-                const products = new Product({
-                    productName:req.body.productName,
-                    price:req.body.price,
-                    description:req.body.description,
-                    active:req.body.active,
-                    image:{
-                        data:req.file.filename,
-                        contentType:'image/png'
-                    }
-                })
-                products.save().then(()=>res.send('success fully uploaded'))
-                .catch(err=>console.log(err));
-            }
-        })
-    } catch (error) {
-        res.send(err);
+const storage = multer.diskStorage({
+    destination: function(req, file, cb){
+      cb(null,'./uploads/');
+    },
+    filename: function(req, file, cb){
+      cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
     }
+});
 
-})
+const fileFilter = (req, file, cb)=>{
+    //reject a file
+    if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png'){
+      cb(null,true);
+    }else{
+        cb(null,false);
+    }
+}
 
+const upload = multer({
+    storage : storage, 
+    limits:
+    {
+        fileSize : 1024 * 1024 * 5
+    },
+        fileFilter: fileFilter
+    });
 
-// products.post("/products/upload", async (req,res)=>{
-//     try {
-//         upload(req,res,(err)=>{
-            
-//         })
-//         console.log("List Products");
-//         const products = new Product({
-//             productName:req.body.productName,
-//             price:req.body.price,
-//             description:req.body.description,
-//             active:req.body.active,
-//             image:{
-//                 data:req.file.filename,
-//                 contentType:'image/png'
-//             }
-//         });
-//         const savedProduct = await products.save();
-//         res.send(savedProduct);    
-//     } catch (error) {
-//         res.send(error);
-//     }
-// });
+products.post("/products",upload.single('productImage'), async (req,res)=>{
+    try {
+        console.log(req.file);
+        console.log("List Products");
+        const products = new Product({
+            productName:req.body.productName,
+            price:req.body.price,
+            description:req.body.description,
+            active:req.body.active,
+            productImage:req.file.path
+        });
+        const savedProduct = await products.save();
+        res.send(savedProduct);    
+    } catch (error) {
+        res.send(error);
+    }
+});
 
 products.get("/products",(req,res)=>{
     console.log("Getting All products");
@@ -82,7 +76,7 @@ products.get("/products/:id",(req,res)=>{
     });
 });
 
-products.put("/products/:id",(req,res)=>{
+products.put("/products/:id", upload.single('productImage'), (req,res)=>{
     Product.findOneAndUpdate({
         _id: req.params.id
     },{
@@ -90,7 +84,8 @@ products.put("/products/:id",(req,res)=>{
             productName:req.body.productName,
             price:req.body.price,
             description:req.body.description,
-            active:req.body.active
+            active:req.body.active,
+            productImage:req.file.path
         }
     },{
         upsert: true
