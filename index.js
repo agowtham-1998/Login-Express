@@ -7,6 +7,7 @@ const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const res = require("express/lib/response");
 const multer = require("multer");
+const variants = require("./routes/variants");
 
 
 dotenv.config();
@@ -25,6 +26,8 @@ app.use("/api/user",routes);
 app.use("/api/user", products);
 
 app.use('/uploads', express.static('uploads'));
+
+app.use("/api/user", variants);
 
 app.listen(3100,()=>{
     console.log("Server Running Successfull")
