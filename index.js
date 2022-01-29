@@ -8,6 +8,9 @@ const cookieParser = require("cookie-parser");
 const res = require("express/lib/response");
 const multer = require("multer");
 const variants = require("./routes/variants");
+const modifier = require("./routes/modifier");
+const cart = require("./routes/cart");
+const cartproducts = require("./routes/cartproducts");
 
 
 dotenv.config();
@@ -28,6 +31,12 @@ app.use("/api/user", products);
 app.use('/uploads', express.static('uploads'));
 
 app.use("/api/user", variants);
+
+app.use("/api/user", modifier);
+
+app.use("/api/user", cart);
+
+app.use("/api/user", cartproducts);
 
 app.listen(3100,()=>{
     console.log("Server Running Successfull")
