@@ -11,6 +11,9 @@ const variants = require("./routes/variants");
 const modifier = require("./routes/modifier");
 const cart = require("./routes/cart");
 const cartproducts = require("./routes/cartproducts");
+const orders = require("./routes/orders");
+const orderedproducts = require("./routes/orderedproducts");
+const payments = require("./routes/payments");
 
 
 dotenv.config();
@@ -37,6 +40,12 @@ app.use("/api/user", modifier);
 app.use("/api/user", cart);
 
 app.use("/api/user", cartproducts);
+
+app.use("/api/user", orders);
+
+app.use("/api/user", orderedproducts);
+
+app.use("/api/user", payments);
 
 app.listen(3100,()=>{
     console.log("Server Running Successfull")
