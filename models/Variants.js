@@ -1,9 +1,12 @@
 const mongoose = require("mongoose");
 
 const variantSchema = new mongoose.Schema({
+    _id: {
+        type: mongoose.Schema.Types.ObjectId,
+      },
     productId : {
-        type:String,
-        required:true
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Product",
     },
     variantName : {
         type:String,

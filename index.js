@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const routes = require("./routes/routes");
+const categories = require("./routes/categories");
+const subcategories = require("./routes/subcategories");
 const products = require("./routes/products");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
@@ -27,7 +29,11 @@ app.use(express.json());
 
 app.use(cookieParser());
 
-app.use("/api/user",routes);
+app.use("/api/user", routes);
+
+app.use("/api/user", categories);
+
+app.use("/api/user", subcategories);
 
 app.use("/api/user", products);
 
