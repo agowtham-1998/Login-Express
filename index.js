@@ -20,10 +20,17 @@ const payments = require("./routes/payments");
 
 dotenv.config();
 
-mongoose.connect(process.env.DB_URL, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true}).then(() => 
-        console.log("Database connected!")).catch(err => console.log(err));
+// mongoose.connect(process.env.DB_URL, {
+//         useNewUrlParser: true,
+//         useUnifiedTopology: true}).then(() => 
+//         console.log("Database connected!")).catch(err => console.log(err));
+
+    mongoose.connect('mongodb://127.0.0.1:27017',{
+    useNewUrlParser: true,
+    useUnifiedTopology: true 
+     }).then(()=>
+    console.log("Database connected!")).catch(err=>console.log(err));
+    
 
 app.use(express.json());
 

@@ -6,7 +6,8 @@ const categorySchema = new mongoose.Schema({
         required:true
     },
     active:{
-        type:Boolean},
+        type:Boolean
+    },
 });
 
 module.exports = mongoose.model("Category",categorySchema);
