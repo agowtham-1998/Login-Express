@@ -6,6 +6,7 @@ categories.post("/categories", async (req,res)=>{
     try {
         console.log("List Category");
         const categories = new Category({
+            _id: req.body.categoryId,
             categoryName:req.body.categoryName,
             active:req.body.active,
         });

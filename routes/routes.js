@@ -12,7 +12,8 @@ routes.post("/signup",async (req,res)=>{
         const user = new User({
             username:req.body.username,
             email:req.body.email,
-            password:hashPassword
+            password:hashPassword,
+            role: req.body.role
         });
         const savedUser = await user.save();
         res.send(savedUser);

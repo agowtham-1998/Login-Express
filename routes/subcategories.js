@@ -29,6 +29,19 @@ subcategories.get("/subcategories",(req,res)=>{
     });
 });
 
+subcategories.get("/subcategories/:categoryId",(req,res)=>{
+    console.log("Getting Category");
+    SubCategory.find({categoryId:req.body.categoryId}).exec(function(err, subcategories){
+        if(err) {
+            res.send('error has occured');
+        } else {
+            console.log(subcategories);
+            res.json(subcategories);
+        }
+    });
+});
+
+
 subcategories.get("/subcategories/:id",(req,res)=>{
     console.log("Getting One subcategories");
     SubCategory.findOne({
