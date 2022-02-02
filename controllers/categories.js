@@ -1,8 +1,7 @@
-const express = require("express");
-const categories = express.Router();
 const Category = require("../models/Categories");
 
-categories.post("/categories", async (req,res)=>{
+
+exports.createByCategories =  async (req,res)=>{
     try {
         console.log("List Category");
         const categories = new Category({
@@ -11,25 +10,36 @@ categories.post("/categories", async (req,res)=>{
             active:req.body.active,
         });
         const savedCategory = await categories.save();
-        res.send(savedCategory);    
+        //res.send(savedCategory); 
+        res.status(201).json({
+            status: "success",
+            data: {
+                savedCategory,
+            },
+          });   
     } catch (error) {
         res.send(error);
     }
-});
+};
 
-categories.get("/categories",(req,res)=>{
+exports.getByAllCategories = (req,res)=>{
     console.log("Getting All categories");
     Category.find({}).exec(function(err, categories){
         if(err) {
             res.send('error has occured');
         } else {
             console.log(categories);
-            res.json(categories);
+            res.status(201).json({
+                status: "success",
+                data: {
+                    categories,
+                },
+              });   
         }
     });
-});
+};
 
-categories.get("/categories/:id",(req,res)=>{
+exports.getByOneCategory = (req,res)=>{
     console.log("Getting One categories");
     Category.findOne({
         _id: req.params.id
@@ -38,12 +48,17 @@ categories.get("/categories/:id",(req,res)=>{
             res.send('error has occured');
         } else {
             console.log(Category);
-            res.json(Category);
+            res.status(201).json({
+                status: "success",
+                data: {
+                    Category,
+                },
+              });  
         }
     });
-});
+};
 
-categories.put("/categories/:id", (req,res)=>{
+exports.updateByCategories = (req,res)=>{
     Category.findOneAndUpdate({
         _id: req.params.id
     },{
@@ -58,12 +73,17 @@ categories.put("/categories/:id", (req,res)=>{
             res.send('error updating book');
         } else {
             console.log(newCategory);
-            res.send(newCategory);
+            res.status(201).json({
+                status: "success",
+                data: {
+                    newCategory,
+                },
+              });  
         }
     });
-});
+};
 
-categories.delete("/categories/:id", (req,res)=>{
+exports.deleteByCategories = (req,res)=>{
     Category.findByIdAndRemove({
         _id: req.params.id
     },function(err, categories){
@@ -71,11 +91,12 @@ categories.delete("/categories/:id", (req,res)=>{
             res.send('error deleting book');
         } else {
             console.log(categories);
-            res.send(categories);
+            res.status(201).json({
+                status: "success",
+                data: {
+                    categories,
+                },
+              });  
         }
     });
-});
-
-
-
-module.exports = categories;
+};

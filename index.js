@@ -1,21 +1,21 @@
 const express = require("express");
 const app = express();
-const routes = require("./routes/routes");
-const categories = require("./routes/categories");
-const subcategories = require("./routes/subcategories");
-const products = require("./routes/products");
+const authRoutes = require("./routes/authRoutes");
+const categoryRoutes = require("./routes/categoryRoutes");
+const subcategoryRoutes = require("./routes/subcatgoryRoutes");
+const products = require("./controllers/products");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const res = require("express/lib/response");
 const multer = require("multer");
-const variants = require("./routes/variants");
-const modifier = require("./routes/modifier");
-const cart = require("./routes/cart");
-const cartproducts = require("./routes/cartproducts");
-const orders = require("./routes/orders");
-const orderedproducts = require("./routes/orderedproducts");
-const payments = require("./routes/payments");
+const variants = require("./controllers/variants");
+const modifier = require("./controllers/modifier");
+const cart = require("./controllers/cart");
+const cartproducts = require("./controllers/cartproducts");
+const orders = require("./controllers/orders");
+const orderedproducts = require("./controllers/orderedproducts");
+const payments = require("./controllers/payments");
 
 
 dotenv.config();
@@ -36,11 +36,11 @@ app.use(express.json());
 
 app.use(cookieParser());
 
-app.use("/api/user", routes);
+app.use("/api/user", authRoutes);
 
-app.use("/api/user", categories);
+app.use("/api/user", categoryRoutes);
 
-app.use("/api/user", subcategories);
+app.use("/api/user", subcategoryRoutes);
 
 app.use("/api/user", products);
 

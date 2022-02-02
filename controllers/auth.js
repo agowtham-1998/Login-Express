@@ -1,55 +1,59 @@
-const express = require("express");
-const routes = express.Router();
 const User = require("../models/User");
 const {hashGenerate} = require("../helpers/hashing");
 const {hashValidator} = require("../helpers/hashing");
 const {tokenGenerator} = require("../helpers/token");
 const authVerify = require("../helpers/authVerify");
+const jwt = require("jsonwebtoken");
 
-routes.post("/signup",async (req,res)=>{
+exports.signup = async (req, res) =>{
     try {
         const hashPassword = await hashGenerate(req.body.password);
-        const user = new User({
+        const user = await User.create({
             username:req.body.username,
             email:req.body.email,
             password:hashPassword,
             role: req.body.role
         });
-        const savedUser = await user.save();
-        res.send(savedUser);
+        res.status(201).json({
+            status: "success",
+            data: {
+              user,
+            },
+          });
 
     } catch (error) {
         res.send(error);
-    }
-   
-})
+    }  
+}
 
-routes.post("/signin",async (req,res)=>{
+exports.signin = async (req,res)=>{
     try {
       const existingUser = await User.findOne({email:req.body.email});
         if(!existingUser){
             res.send("Email Invalid");
-            //console.log("eeeeeeeeeee",existingUser);
         }else{
-            //console.log("eeeeeeeeeee",existingUser);
            const checkUser = await hashValidator(req.body.password,existingUser.password);
            if(!checkUser){
               res.send("Password is Invaild");
               console.log("ggggggg",checkUser);
            } else {
-            //console.log("ggggggg",checkUser);
             const token = await tokenGenerator(existingUser.email);
             res.cookie("jwt",token);
-            res.send(token);
+            //res.send(token);
+            res.status(200).json({
+                status: "success",
+                token,
+                data: {
+                    existingUser,
+                },
+              });
            }
         }  
     } catch (error) {
         res.send(error);
     }
-})
+}
 
-routes.get("/protected",authVerify,(req,res)=>{
+exports.protected = authVerify,(req,res)=>{
     res.send("protected route");
-})
-
-module.exports = routes;
+};

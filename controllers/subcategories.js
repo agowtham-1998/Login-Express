@@ -1,8 +1,6 @@
-const express = require("express");
-const subcategories = express.Router();
 const SubCategory = require("../models/SubCategories");
 
-subcategories.post("/subcategories", async (req,res)=>{
+exports.creteBySubCategories = async (req,res)=>{
     try {
         console.log("List Category");
         const subcategories = new SubCategory({
@@ -11,38 +9,53 @@ subcategories.post("/subcategories", async (req,res)=>{
             active:req.body.active,
         });
         const savedSubCategory = await subcategories.save();
-        res.send(savedSubCategory);    
+        res.status(201).json({
+            status: "success",
+            data: {
+                savedSubCategory,
+            },
+          });   
     } catch (error) {
         res.send(error);
     }
-});
+};
 
-subcategories.get("/subcategories",(req,res)=>{
+exports.getByAllSubCategories = (req,res)=>{
     console.log("Getting All subcategories");
     SubCategory.find({}).exec(function(err, subcategories){
         if(err) {
             res.send('error has occured');
         } else {
             console.log(subcategories);
-            res.json(subcategories);
+            res.status(201).json({
+                status: "success",
+                data: {
+                    subcategories,
+                },
+              });   
         }
     });
-});
+};
 
-subcategories.get("/subcategories/:categoryId",(req,res)=>{
-    console.log("Getting Category");
-    SubCategory.find({categoryId:req.body.categoryId}).exec(function(err, subcategories){
-        if(err) {
-            res.send('error has occured');
-        } else {
-            console.log(subcategories);
-            res.json(subcategories);
-        }
-    });
-});
+// exports.getSubCatgoryByCategoryId = (req,res)=>{
+//     console.log("Getting Category");
+//     SubCategory.find({categoryId:req.body.categoryId}).exec(function(err, subcategories){
+//         if(err) {
+//             res.send('error has occured');
+//         } else {
+//             console.log(subcategories);
+//             res.status(201).json({
+//                 status: "success",
+//                 data: {
+//                     subcategories,
+//                 },
+//               });   
+//         }
+//     });
+// };
 
 
-subcategories.get("/subcategories/:id",(req,res)=>{
+exports.getByOneSubCategories = (req,res)=>{
     console.log("Getting One subcategories");
     SubCategory.findOne({
         _id: req.params.id
@@ -51,12 +64,17 @@ subcategories.get("/subcategories/:id",(req,res)=>{
             res.send('error has occured');
         } else {
             console.log(SubCategory);
-            res.json(SubCategory);
+            res.status(201).json({
+                status: "success",
+                data: {
+                    SubCategory,
+                },
+              });   
         }
     });
-});
+};
 
-subcategories.put("/subcategories/:id", (req,res)=>{
+exports.updateSubCategories = (req,res)=>{
     SubCategory.findOneAndUpdate({
         _id: req.params.id
     },{
@@ -72,12 +90,17 @@ subcategories.put("/subcategories/:id", (req,res)=>{
             res.send('error updating subcategories');
         } else {
             console.log(newSubCategory);
-            res.send(newSubCategory);
+            res.status(201).json({
+                status: "success",
+                data: {
+                    newSubCategory,
+                },
+              });   
         }
     });
-});
+};
 
-subcategories.delete("/subcategories/:id", (req,res)=>{
+exports.deleteSubCategories = (req,res)=>{
     SubCategory.findByIdAndRemove({
         _id: req.params.id
     },function(err, subcategories){
@@ -85,10 +108,13 @@ subcategories.delete("/subcategories/:id", (req,res)=>{
             res.send('error deleting subcategories');
         } else {
             console.log(subcategories);
-            res.send(subcategories);
+            res.status(201).json({
+                status: "success",
+                data: {
+                    subcategories,
+                },
+              });   
         }
     });
-});
+};
 
-
-module.exports = subcategories;
