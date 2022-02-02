@@ -55,6 +55,8 @@ exports.getByAllSubCategories = (req,res)=>{
 // };
 
 
+
+
 exports.getByOneSubCategories = (req,res)=>{
     console.log("Getting One subcategories");
     SubCategory.findOne({

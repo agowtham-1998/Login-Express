@@ -10,4 +10,5 @@ router.put('/subcategories/:id', subcategories.updateSubCategories);
 router.delete('/subcategories/:id', subcategories.deleteSubCategories);
 
 
+
 module.exports = router;
