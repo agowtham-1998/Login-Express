@@ -54,7 +54,7 @@ exports.signin = async (req,res)=>{
     }
 }
 
-exports.protected = (req,res)=>{
+exports.protected = authVerify , (req,res)=>{
     res.send("protected route");
 };
 
