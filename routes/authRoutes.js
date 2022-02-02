@@ -10,7 +10,7 @@ router.get('./protected',auth.protected)
 // router.use(auth.protect);
 
 // Only admin have permission to access for the below APIs 
-router.use(auth.restrictTo('admin'));
+// router.use(auth.restrictTo('admin'));
 
 
 module.exports = router;
