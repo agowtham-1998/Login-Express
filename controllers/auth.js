@@ -54,6 +54,21 @@ exports.signin = async (req,res)=>{
     }
 }
 
-exports.protected = authVerify,(req,res)=>{
+exports.protected = (req,res)=>{
     res.send("protected route");
 };
+
+
+exports.restrictTo = (...roles) => {
+    return (req, res, next) => {
+      if (!roles.includes(req.user.role)) {
+        return next(
+          new AppError(403, "fail", "You are not allowed to do this action"),
+          req,
+          res,
+          next,
+        );
+      }
+      next();
+    };
+  };
