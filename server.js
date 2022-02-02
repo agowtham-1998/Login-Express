@@ -1,3 +1,4 @@
+const app = require('./app');
 const mongoose = require('mongoose');
 const dotenv = require("dotenv");
 dotenv.config({
@@ -10,12 +11,10 @@ process.on('uncaughtException', err => {
     process.exit(1);
 });
 
-const app = require('./app');
 
 //Connect to My Local Mongodb
 
 const database = process.env.LOCAL_DB.replace('<PASSWORD>', process.env.LOCAL_DB_PASS);
-
 
 //Connect to Mongodb Atlas 
 
@@ -30,12 +29,7 @@ mongoose.connect(database, {
     console.log('DB connection Successfully!');
 });
 
-// mongoose.connect('mongodb://127.0.0.1:27017/test',{
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true 
-//      }).then(()=>
-//     console.log("Database connected!")).catch(err=>console.log(err));
-    
+
 // Start the server
 const port = process.env.PORT;
 app.listen(3100, () => {
