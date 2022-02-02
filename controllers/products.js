@@ -1,37 +1,6 @@
-const express = require("express");
-const res = require("express/lib/response");
-const products = express.Router();
 const Product = require("../models/Products");
-const multer = require("multer");
 
-const storage = multer.diskStorage({
-    destination: function(req, file, cb){
-      cb(null,'./uploads/');
-    },
-    filename: function(req, file, cb){
-      cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
-    }
-});
-
-const fileFilter = (req, file, cb)=>{
-    //reject a file
-    if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png'){
-      cb(null,true);
-    }else{
-        cb(null,false);
-    }
-}
-
-const upload = multer({
-    storage : storage, 
-    limits:
-    {
-        fileSize : 1024 * 1024 * 5
-    },
-        fileFilter: fileFilter
-    });
-
-products.post("/products",upload.single('productImage'), async (req,res)=>{
+exports.createByProducts = async (req,res)=>{
     try {
         console.log(req.file);
         console.log("List Products");
@@ -43,26 +12,36 @@ products.post("/products",upload.single('productImage'), async (req,res)=>{
             productImage:req.file.path
         });
         const savedProduct = await products.save();
-        res.send(savedProduct);    
+        res.status(201).json({
+            status: "success",
+            data: {
+                savedProduct,
+            },
+          });      
     } catch (error) {
         res.send(error);
     }
-});
+};
 
-products.get("/products",(req,res)=>{
+exports.getByAllProducts = (req,res)=>{
     console.log("Getting All products");
     Product.find({}).exec(function(err, products){
         if(err) {
             res.send('error has occured');
         } else {
             console.log(products);
-            res.json(products);
+            res.status(201).json({
+                status: "success",
+                data: {
+                    products,
+                },
+              }); 
         }
     });
-})
+}
 
 
-products.get("/products/:id",(req,res)=>{
+exports.getByOneProduct = async (req,res)=>{
     console.log("Getting One product");
     Product.findOne({
         _id: req.params.id
@@ -71,12 +50,17 @@ products.get("/products/:id",(req,res)=>{
             res.send('error has occured');
         } else {
             console.log(Product);
-            res.json(Product);
+            res.status(201).json({
+                status: "success",
+                data: {
+                    Product,
+                },
+              }); 
         }
     });
-});
+};
 
-products.put("/products/:id", upload.single('productImage'), (req,res)=>{
+exports.updateByProducts = (req,res)=>{
     Product.findOneAndUpdate({
         _id: req.params.id
     },{
@@ -94,12 +78,17 @@ products.put("/products/:id", upload.single('productImage'), (req,res)=>{
             res.send('error updating book');
         } else {
             console.log(newProduct);
-            res.send(newProduct);
+            res.status(201).json({
+                status: "success",
+                data: {
+                    newProduct,
+                },
+              }); 
         }
     });
-});
+};
 
-products.delete("/products/:id", (req,res)=>{
+exports.deleteByProducts = (req,res)=>{
     Product.findByIdAndRemove({
         _id: req.params.id
     },function(err, products){
@@ -107,10 +96,12 @@ products.delete("/products/:id", (req,res)=>{
             res.send('error deleting book');
         } else {
             console.log(products);
-            res.send(products);
+            res.status(201).json({
+                status: "success",
+                data: {
+                    products,
+                },
+              }); 
         }
     });
-});
-
-
-module.exports = products;
+};

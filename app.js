@@ -1,12 +1,10 @@
 const express = require("express");
 const app = express();
-const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
-const multer = require("multer");
 const authRoutes = require("./routes/authRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const subcategoryRoutes = require("./routes/subcatgoryRoutes");
-const products = require("./controllers/products");
+const productRoutes = require("./routes/productRoutes");
 const variants = require("./controllers/variants");
 const modifier = require("./controllers/modifier");
 const cart = require("./controllers/cart");
@@ -26,7 +24,7 @@ app.use("/api/user", categoryRoutes);
 
 app.use("/api/user", subcategoryRoutes);
 
-app.use("/api/user", products);
+app.use("/api/user", productRoutes);
 
 app.use('/uploads', express.static('uploads'));
 
