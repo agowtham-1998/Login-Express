@@ -13,6 +13,47 @@ const orders = require("./controllers/orders");
 const orderedproducts = require("./controllers/orderedproducts");
 const payments = require("./controllers/payments");
 
+//razorpay payment api test
+var Razorpay = require("razorpay");
+
+
+var instance = new Razorpay({
+    key_id: 'rzp_test_urJcWW5CCTcr8V',
+    key_secret: 'qmA2cYxlBN5XT4cjiYlbZpOo'
+});
+
+
+app.get("/createOrderBasic", (req, res) => {
+    var options = {
+           amount: 500,  // amount in the smallest currency unit
+           currency: "USD",
+       };
+       instance.orders.create(options, function (err, order) {
+           res.send(order);
+       });
+   });
+   
+   app.get("/createOrderPremium", (req, res) => {
+    var options = {
+           amount: 2000,  // amount in the smallest currency unit
+           currency: "USD",
+       };
+       instance.orders.create(options, function (err, order) {
+           res.send(order);
+       });
+   });
+   
+   app.get("/createOrderUltimate", (req, res) => {
+    var options = {
+           amount: 5000,  // amount in the smallest currency unit
+           currency: "USD",
+       };
+       instance.orders.create(options, function (err, order) {
+           res.send(order);
+       });
+   });
+   
+
 
 app.use(express.json());
 
