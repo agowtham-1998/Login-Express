@@ -1,9 +1,6 @@
-const express = require("express");
-const variants = express.Router();
 const Variant = require("../models/Variants");
-const Product = require("../models/Products");
 
-variants.post("/variants", async (req,res)=>{
+exports.createByVariants = async (req,res)=>{
     try {
         console.log("List Variants");
         const variants = new Variant({
@@ -14,25 +11,35 @@ variants.post("/variants", async (req,res)=>{
             isActive:req.body.isActive
         });
         const savedVariant = await variants.save();
-        res.send(savedVariant);    
+        res.status(201).json({
+            status: "success",
+            data: {
+                savedVariant,
+            },
+          });      
     } catch (error) {
         res.send(error);
     }
-});
+};
 
-variants.get("/variants",(req,res)=>{
+exports.getByAllVariants = (req,res)=>{
     console.log("Getting All variants");
     Variant.find({}).exec(function(err, variants){
         if(err) {
             res.send('error has occured');
         } else {
             console.log(variants);
-            res.json(variants);
+            res.status(201).json({
+                status: "success",
+                data: {
+                    variants,
+                },
+              });   
         }
     });
-});
+};
 
-variants.get("/variants/:id",(req,res)=>{
+exports.getByOneVariants = (req,res)=>{
     console.log("Getting One variants");
     Variant.findOne({
         _id: req.params.id
@@ -41,12 +48,17 @@ variants.get("/variants/:id",(req,res)=>{
             res.send('error has occured');
         } else {
             console.log(Variant);
-            res.json(Variant);
+            res.status(201).json({
+                status: "success",
+                data: {
+                    Variant,
+                },
+              });   
         }
     });
-});
+};
 
-variants.put("/variants/:id", (req,res)=>{
+exports.updateVariants = (req,res)=>{
     Variant.findOneAndUpdate({
         _id: req.params.id
     },{
@@ -61,26 +73,33 @@ variants.put("/variants/:id", (req,res)=>{
         upsert: true
     },function(err, newVariant){
         if(err) {
-            res.send('error updating book');
+            res.send('error updating variants');
         } else {
             console.log(newVariant);
-            res.send(newVariant);
+            res.status(201).json({
+                status: "success",
+                data: {
+                    newVariant,
+                },
+              });   
         }
     });
-});
+};
 
-variants.delete("/variants/:id", (req,res)=>{
+exports.deleteByVariants = (req,res)=>{
     Variant.findByIdAndRemove({
         _id: req.params.id
     },function(err, variants){
         if(err) {
-            res.send('error deleting book');
+            res.send('error deleting variants');
         } else {
             console.log(variants);
-            res.send(variants);
+            res.status(201).json({
+                status: "success",
+                data: {
+                    variants,
+                },
+              });   
         }
     });
-});
-
-
-module.exports = variants;
+};

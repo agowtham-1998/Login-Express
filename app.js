@@ -5,7 +5,7 @@ const authRoutes = require("./routes/authRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const subcategoryRoutes = require("./routes/subcatgoryRoutes");
 const productRoutes = require("./routes/productRoutes");
-const variants = require("./controllers/variants");
+const variantRoutes = require("./routes/variantRoutes");
 const modifier = require("./controllers/modifier");
 const cart = require("./controllers/cart");
 const cartproducts = require("./controllers/cartproducts");
@@ -69,7 +69,7 @@ app.use("/api/user", productRoutes);
 
 app.use('/uploads', express.static('uploads'));
 
-app.use("/api/user", variants);
+app.use("/api/user", variantRoutes);
 
 app.use("/api/user", modifier);
 

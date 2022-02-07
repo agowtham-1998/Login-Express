@@ -39,7 +39,7 @@ exports.getByAllSubCategories = (req,res)=>{
 
 // exports.getSubCatgoryByCategoryId = (req,res)=>{
 //     console.log("Getting Category");
-//     SubCategory.find({categoryId:req.body.categoryId}).exec(function(err, subcategories){
+//     SubCategory.findById(id).populate('categories').exec(function(err, subcategories){
 //         if(err) {
 //             res.send('error has occured');
 //         } else {
@@ -53,8 +53,6 @@ exports.getByAllSubCategories = (req,res)=>{
 //         }
 //     });
 // };
-
-
 
 
 exports.getByOneSubCategories = (req,res)=>{

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const categorySchema = new mongoose.Schema({
-    subcategories: [{ type: mongoose.Types.ObjectId, ref: 'SubCategory' }],
+   
     categoryName:{
         type:String,
         required:true
@@ -10,5 +10,7 @@ const categorySchema = new mongoose.Schema({
         type:Boolean
     },
 });
+
+Product = 
 
 module.exports = mongoose.model("Category",categorySchema);
