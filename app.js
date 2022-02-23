@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const subcategoryRoutes = require("./routes/subcatgoryRoutes");
@@ -58,6 +59,8 @@ app.get("/createOrderBasic", (req, res) => {
 app.use(express.json());
 
 app.use(cookieParser());
+
+app.use(cors());
 
 app.use("/api/user", authRoutes);
 

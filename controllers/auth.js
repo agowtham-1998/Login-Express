@@ -12,7 +12,6 @@ exports.signup = async (req, res) =>{
             username:req.body.username,
             email:req.body.email,
             password:hashPassword,
-            role: req.body.role
         });
         res.status(201).json({
             status: "success",

@@ -1,5 +1,5 @@
 const {tokenValidator} = require("./token");
-
+const jwt = require("jsonwebtoken");
 module.exports = async function(req,res,next){
     try {
         const {jwt} = req.cookies;
